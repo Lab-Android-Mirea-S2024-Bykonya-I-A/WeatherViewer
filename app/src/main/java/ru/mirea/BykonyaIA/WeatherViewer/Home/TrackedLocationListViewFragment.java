@@ -1,4 +1,4 @@
-package ru.mirea.BykonyaIA.WeatherViewer;
+package ru.mirea.BykonyaIA.WeatherViewer.Home;
 
 import android.os.Bundle;
 
@@ -7,18 +7,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import ru.mirea.BykonyaIA.WeatherViewer.Profile.ProfileViewModel;
 import ru.mirea.BykonyaIA.WeatherViewer.TrackedLocationList.TrackedLocationListViewAdapter;
 import ru.mirea.BykonyaIA.WeatherViewer.TrackedLocationList.TrackedLocationListViewModel;
 import ru.mirea.BykonyaIA.WeatherViewer.databinding.FragmentTrackedLocationListViewBinding;
-import ru.mirea.bykonyaia.domain.dto.Geoposition;
 
 public class TrackedLocationListViewFragment extends Fragment {
     private TrackedLocationListViewAdapter.ItemClickedListener listener = null;
@@ -38,14 +36,10 @@ public class TrackedLocationListViewFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        var activity = requireActivity();
-        Log.d("HE_HE", "Activity: " + activity);
-        var vmp = new ViewModelProvider(activity);
-        Log.d("HE_HE", "VMP: " + vmp);
-        var vm = vmp.get(TrackedLocationListViewModel.class);
-//        vm = new ViewModelProvider(requireActivity()).get(TrackedLocationListViewModel.class);
+    public void onStart() {
+        super.onStart();
+        Log.d("HE_HE", "Activity: " + requireActivity());
+        var vm = new ViewModelProvider(requireActivity()).get(TrackedLocationListViewModel.class);
         Log.d("HE_HE", "VM: " + vm);
         vm.getTrackedLocataionInfoList().observe(getViewLifecycleOwner(), trackedLocationInfos -> {
             var adapter = new TrackedLocationListViewAdapter(getContext(), vm.getTrackedLocataionInfoList().getValue());

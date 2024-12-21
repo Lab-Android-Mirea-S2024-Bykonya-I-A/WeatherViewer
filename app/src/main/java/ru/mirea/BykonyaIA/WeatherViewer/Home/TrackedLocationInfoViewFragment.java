@@ -1,25 +1,19 @@
-package ru.mirea.BykonyaIA.WeatherViewer;
+package ru.mirea.BykonyaIA.WeatherViewer.Home;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.squareup.picasso.Picasso;
 
-import ru.mirea.BykonyaIA.WeatherViewer.TrackedLocationList.TrackedLocationListViewAdapter;
-import ru.mirea.BykonyaIA.WeatherViewer.TrackedLocationList.TrackedLocationListViewModel;
+import ru.mirea.BykonyaIA.WeatherViewer.R;
 import ru.mirea.BykonyaIA.WeatherViewer.databinding.FragmentTrackedLocationInfoViewBinding;
-import ru.mirea.BykonyaIA.WeatherViewer.databinding.FragmentTrackedLocationListViewBinding;
-import ru.mirea.bykonyaia.domain.dto.Geoposition;
 
 
 public class TrackedLocationInfoViewFragment extends Fragment {

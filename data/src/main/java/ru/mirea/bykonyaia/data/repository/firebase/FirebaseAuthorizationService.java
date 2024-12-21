@@ -29,7 +29,10 @@ public class FirebaseAuthorizationService implements IAuthorizationService {
     }
     @Override
     public String GetUsername() {
-        return Objects.requireNonNull(auth.getCurrentUser()).getDisplayName();
+        if(auth == null || auth.getCurrentUser() == null) {
+            return "Undefined...";
+        }
+        return Objects.requireNonNull(auth.getCurrentUser()).getUid();
     }
 
     @Override
