@@ -9,7 +9,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import ru.mirea.BykonyaIA.WeatherViewer.R;
 
-public class TrackedLocationListViewHolder extends RecyclerView.ViewHolder	{
+public class TrackedLocationListViewHolder extends RecyclerView.ViewHolder {
+    public interface ItemClickListener {
+        void onClick(View view, int position);
+    }
+    private ItemClickListener listener = null;
+    public void SetItemClickListener(ItemClickListener listener) {
+        this.listener = listener;
+    }
+
     ImageView iconView;
     TextView titleTextView;
     TextView descriptionTextView;
@@ -18,5 +26,10 @@ public class TrackedLocationListViewHolder extends RecyclerView.ViewHolder	{
         iconView = itemView.findViewById(R.id.icon_view);
         titleTextView = itemView.findViewById(R.id.title_text);
         descriptionTextView = itemView.findViewById(R.id.description_text);
+        itemView.setOnClickListener(v -> {
+            if(listener != null) {
+                listener.onClick(itemView, getAdapterPosition());
+            }
+        });
     }
 }

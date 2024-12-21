@@ -47,6 +47,9 @@ android {
 }
 
 dependencies {
+    implementation(libs.navigation.ui)
+    implementation(libs.navigation.fragment)
+
     implementation(libs.picasso)
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")

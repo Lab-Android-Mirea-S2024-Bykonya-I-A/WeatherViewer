@@ -14,9 +14,19 @@ import java.util.List;
 import java.util.Random;
 
 import ru.mirea.BykonyaIA.WeatherViewer.R;
+import ru.mirea.bykonyaia.domain.dto.Geoposition;
 import ru.mirea.bykonyaia.domain.dto.TrackedLocationInfo;
 
 public class TrackedLocationListViewAdapter extends RecyclerView.Adapter<TrackedLocationListViewHolder> {
+    public interface ItemClickedListener {
+        void onClick(TrackedLocationInfo info);
+    }
+    private ItemClickedListener listener = null;
+    public void SetItemClickedListener(ItemClickedListener listener) {
+        this.listener = listener;
+    }
+
+
     private final List<TrackedLocationInfo> trackedLocationInfos;
     private final LayoutInflater layoutInflater;
     public TrackedLocationListViewAdapter(Context context, List<TrackedLocationInfo> trackedLocationInfos) {
@@ -41,6 +51,11 @@ public class TrackedLocationListViewAdapter extends RecyclerView.Adapter<Tracked
             .fit().into(holder.iconView);
         holder.titleTextView.setText(info.Geoposition().toString());
         holder.descriptionTextView.setText(String.valueOf(info.Temperature()));
+        holder.SetItemClickListener((view, itemPosition) -> {
+            if(listener != null) {
+                listener.onClick(trackedLocationInfos.get(position));
+            }
+        });
     }
     @Override
     public int getItemCount() {

@@ -8,6 +8,10 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import ru.mirea.BykonyaIA.WeatherViewer.TrackedLocationList.TrackedLocationListViewAdapter;
@@ -32,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        binding.logOutButton.setOnClickListener(v -> OnLogOutButtonClicked());
+//        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        binding.logOutButton.setOnClickListener(v -> OnLogOutButtonClicked());
         setContentView(binding.getRoot());
 
         auth = new FirebaseAuthorizationService(FirebaseAuth.getInstance());
@@ -42,14 +46,29 @@ public class MainActivity extends AppCompatActivity {
         var trackedLocationRepository = new RoomTrackedLocationRepository(database.roomTrackedLocationDao());
         vm = new ViewModelProvider(this, new TrackedLocationListViewModelFactory(trackedLocationInfoRepository, trackedLocationRepository)).get(TrackedLocationListViewModel.class);
 
-//        trackedLocationRepository.appendGeoposition(new Geoposition(55, 37));
-//        trackedLocationRepository.appendGeoposition(new Geoposition(50, 32));
-//        trackedLocationRepository.appendGeoposition(new Geoposition(10, 22));
-
-        vm.getTrackedLocataionInfoList().observe(this, trackedLocationInfos -> {
-            binding.recyclerView.setAdapter(new TrackedLocationListViewAdapter(MainActivity.this, vm.getTrackedLocataionInfoList().getValue()));
-            Log.i("HE_HE", "DATA MVVM CHANGED");
+//        AppBarConfiguration appBarConfiguration =
+//                new AppBarConfiguration.Builder(
+//                        R.id.navigation_info,
+//                        R.id.navigation_profile
+//                ).build();
+//        NavController navController = Navigation.findNavController(this, R.id.nav_host);
+//        NavigationUI.setupWithNavController(binding.navView, navController);
+        var trackedLocationsListFragment = new TrackedLocationListViewFragment();
+        trackedLocationsListFragment.SetItemClickedListener(info -> {
+            var bundle = new Bundle();
+            bundle.putString("icon_uri", info.iconUri());
+            bundle.putString("title", info.Geoposition().toString());
+            bundle.putString("description", info.toString());
+            getSupportFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .replace(R.id.fragment_container_view, TrackedLocationInfoViewFragment.class, bundle)
+                    .addToBackStack(null)
+                    .commit();
         });
+        getSupportFragmentManager().beginTransaction()
+                        .setReorderingAllowed(true)
+                        .replace(R.id.fragment_container_view, trackedLocationsListFragment)
+                        .commit();
     }
     @Override
     protected void onStart() {
